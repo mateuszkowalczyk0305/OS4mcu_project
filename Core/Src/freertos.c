@@ -52,7 +52,7 @@ osThreadId_t myTask01Handle;
 const osThreadAttr_t myTask01_attributes = {
   .name = "myTask01",
   .stack_size = 128 * 4,
-  .priority = (osPriority_t) osPriorityNormal,
+  .priority = (osPriority_t) osPriorityHigh,
 };
 /* Definitions for myTask02 */
 osThreadId_t myTask02Handle;
@@ -133,7 +133,7 @@ void StartTask01(void *argument)
 		  HAL_Delay(50);
 	  }
 
-    osDelay(1000);
+//    osDelay(1000);
   }
   /* USER CODE END StartTask01 */
 }
@@ -151,7 +151,7 @@ void StartTask02(void *argument)
   /* Infinite loop */
   for(;;)
   {
-	  for(int i = 0; i < 10; i++){
+	  for(int i = 0; i < 5; i++){
 		  HAL_GPIO_TogglePin(GREEN_LED_GPIO_Port , GREEN_LED_Pin);
 		  HAL_Delay(300);
 	  }
