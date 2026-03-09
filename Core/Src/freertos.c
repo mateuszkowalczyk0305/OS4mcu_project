@@ -144,7 +144,7 @@ void StartTask01(void *argument)
 		  HAL_Delay(50);
 	  }
 
-    osDelay(1000);
+    osDelay(300);
   }
   /* USER CODE END StartTask01 */
 }
@@ -167,7 +167,7 @@ void StartTask02(void *argument)
 		  HAL_Delay(300);
 	  }
 
-    osDelay(1000);
+    osDelay(300);
   }
   /* USER CODE END StartTask02 */
 }
@@ -189,7 +189,7 @@ void StartTask03(void *argument)
 		  HAL_GPIO_WritePin(GREEN_LED_GPIO_Port, GREEN_LED_Pin, GPIO_PIN_RESET);
 		  HAL_Delay(250);
 	  }
-    osDelay(1000);
+    osDelay(300);
   }
   /* USER CODE END StartTask03 */
 }
