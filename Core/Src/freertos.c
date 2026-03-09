@@ -52,7 +52,7 @@ osThreadId_t myTask01Handle;
 const osThreadAttr_t myTask01_attributes = {
   .name = "myTask01",
   .stack_size = 128 * 4,
-  .priority = (osPriority_t) osPriorityHigh,
+  .priority = (osPriority_t) osPriorityNormal,
 };
 /* Definitions for myTask02 */
 osThreadId_t myTask02Handle;
@@ -133,7 +133,7 @@ void StartTask01(void *argument)
 		  HAL_Delay(50);
 	  }
 
-//    osDelay(1000);
+    osDelay(1000);
   }
   /* USER CODE END StartTask01 */
 }
