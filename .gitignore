@@ -2,12 +2,23 @@
 Debug/
 Release/
 
-# IDE settings
+# STM32CubeIDE
 .settings/
+.metadata
 
-# Temporary files
+# Object files
+*.o
+*.d
+*.su
+
+# Executables
+*.elf
+*.bin
+*.hex
+*.map
+
+# Logs
 *.log
-*.tmp
 
 # OS
 .DS_Store
