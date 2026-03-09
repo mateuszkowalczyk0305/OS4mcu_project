@@ -1,0 +1,14 @@
+# Build folders
+Debug/
+Release/
+
+# IDE settings
+.settings/
+
+# Temporary files
+*.log
+*.tmp
+
+# OS
+.DS_Store
+Thumbs.db
