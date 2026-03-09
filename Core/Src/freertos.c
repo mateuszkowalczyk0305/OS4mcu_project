@@ -47,10 +47,17 @@
 /* USER CODE BEGIN Variables */
 
 /* USER CODE END Variables */
-/* Definitions for defaultTask */
-osThreadId_t defaultTaskHandle;
-const osThreadAttr_t defaultTask_attributes = {
-  .name = "defaultTask",
+/* Definitions for myTask01 */
+osThreadId_t myTask01Handle;
+const osThreadAttr_t myTask01_attributes = {
+  .name = "myTask01",
+  .stack_size = 128 * 4,
+  .priority = (osPriority_t) osPriorityNormal,
+};
+/* Definitions for myTask02 */
+osThreadId_t myTask02Handle;
+const osThreadAttr_t myTask02_attributes = {
+  .name = "myTask02",
   .stack_size = 128 * 4,
   .priority = (osPriority_t) osPriorityNormal,
 };
@@ -60,7 +67,8 @@ const osThreadAttr_t defaultTask_attributes = {
 
 /* USER CODE END FunctionPrototypes */
 
-void StartDefaultTask(void *argument);
+void StartTask01(void *argument);
+void StartTask02(void *argument);
 
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
@@ -91,8 +99,11 @@ void MX_FREERTOS_Init(void) {
   /* USER CODE END RTOS_QUEUES */
 
   /* Create the thread(s) */
-  /* creation of defaultTask */
-  defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
+  /* creation of myTask01 */
+  myTask01Handle = osThreadNew(StartTask01, NULL, &myTask01_attributes);
+
+  /* creation of myTask02 */
+  myTask02Handle = osThreadNew(StartTask02, NULL, &myTask02_attributes);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
@@ -104,22 +115,50 @@ void MX_FREERTOS_Init(void) {
 
 }
 
-/* USER CODE BEGIN Header_StartDefaultTask */
+/* USER CODE BEGIN Header_StartTask01 */
 /**
-  * @brief  Function implementing the defaultTask thread.
+  * @brief  Function implementing the myTask01 thread.
   * @param  argument: Not used
   * @retval None
   */
-/* USER CODE END Header_StartDefaultTask */
-void StartDefaultTask(void *argument)
+/* USER CODE END Header_StartTask01 */
+void StartTask01(void *argument)
 {
-  /* USER CODE BEGIN StartDefaultTask */
+  /* USER CODE BEGIN StartTask01 */
   /* Infinite loop */
   for(;;)
   {
-    osDelay(1);
+	  for(int i = 0; i < 10; i++){
+		  HAL_GPIO_TogglePin(GREEN_LED_GPIO_Port , GREEN_LED_Pin);
+		  HAL_Delay(50);
+	  }
+
+    osDelay(1000);
   }
-  /* USER CODE END StartDefaultTask */
+  /* USER CODE END StartTask01 */
+}
+
+/* USER CODE BEGIN Header_StartTask02 */
+/**
+  * @brief  Function implementing the myTask01 thread.
+  * @param  argument: Not used
+  * @retval None
+  */
+/* USER CODE END Header_StartTask02 */
+void StartTask02(void *argument)
+{
+  /* USER CODE BEGIN StartTask02 */
+  /* Infinite loop */
+  for(;;)
+  {
+	  for(int i = 0; i < 10; i++){
+		  HAL_GPIO_TogglePin(GREEN_LED_GPIO_Port , GREEN_LED_Pin);
+		  HAL_Delay(300);
+	  }
+
+    osDelay(1000);
+  }
+  /* USER CODE END StartTask02 */
 }
 
 /* Private application code --------------------------------------------------*/
