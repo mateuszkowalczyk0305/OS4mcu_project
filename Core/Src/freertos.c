@@ -30,17 +30,23 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
-
+osEventFlagsId_t myEventFlags;
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
 
+osThreadState_t task01_state;
+osThreadState_t task02_state;
+osThreadState_t task03_state;
+
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
-
+//extern osThreadState_t task01_state;
+//extern osThreadState_t task02_state;
+//extern osThreadState_t task03_state;
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
@@ -52,26 +58,26 @@ osThreadId_t myTask01Handle;
 const osThreadAttr_t myTask01_attributes = {
   .name = "myTask01",
   .stack_size = 128 * 4,
-  .priority = (osPriority_t) osPriorityNormal,
+  .priority = (osPriority_t) osPriorityHigh,
 };
 /* Definitions for myTask02 */
 osThreadId_t myTask02Handle;
 const osThreadAttr_t myTask02_attributes = {
   .name = "myTask02",
   .stack_size = 128 * 4,
-  .priority = (osPriority_t) osPriorityLow,
+  .priority = (osPriority_t) osPriorityNormal,
 };
 /* Definitions for myTask03 */
 osThreadId_t myTask03Handle;
 const osThreadAttr_t myTask03_attributes = {
   .name = "myTask03",
   .stack_size = 128 * 4,
-  .priority = (osPriority_t) osPriorityHigh,
+  .priority = (osPriority_t) osPriorityLow,
 };
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
-
+void reportStatus(void);
 /* USER CODE END FunctionPrototypes */
 
 void StartTask01(void *argument);
@@ -92,6 +98,7 @@ void MX_FREERTOS_Init(void) {
 
   /* USER CODE BEGIN RTOS_MUTEX */
   /* add mutexes, ... */
+	myEventFlags = osEventFlagsNew(NULL);
   /* USER CODE END RTOS_MUTEX */
 
   /* USER CODE BEGIN RTOS_SEMAPHORES */
@@ -118,10 +125,14 @@ void MX_FREERTOS_Init(void) {
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
+
+
+
   /* USER CODE END RTOS_THREADS */
 
   /* USER CODE BEGIN RTOS_EVENTS */
   /* add events, ... */
+//  myEventFlags = osEventFlagsNew(NULL);
   /* USER CODE END RTOS_EVENTS */
 
 }
@@ -136,14 +147,18 @@ void MX_FREERTOS_Init(void) {
 void StartTask01(void *argument)
 {
   /* USER CODE BEGIN StartTask01 */
+	printf("start Task01\n\r");
   /* Infinite loop */
   for(;;)
   {
+	  reportStatus();
+	  osEventFlagsWait(myEventFlags, 0x1, osFlagsWaitAll, osWaitForever);
+
 	  for(int i = 0; i < 10; i++){
 		  HAL_GPIO_TogglePin(GREEN_LED_GPIO_Port , GREEN_LED_Pin);
 		  HAL_Delay(50);
 	  }
-
+	  printf("release resources Task01\n\r");
     osDelay(300);
   }
   /* USER CODE END StartTask01 */
@@ -159,14 +174,18 @@ void StartTask01(void *argument)
 void StartTask02(void *argument)
 {
   /* USER CODE BEGIN StartTask02 */
+  printf("Start Task02\n\r");
+
   /* Infinite loop */
   for(;;)
   {
+	  reportStatus();
+
 	  for(int i = 0; i < 5; i++){
 		  HAL_GPIO_TogglePin(GREEN_LED_GPIO_Port , GREEN_LED_Pin);
 		  HAL_Delay(300);
 	  }
-
+	 printf("release resources Task02\n\r");
     osDelay(300);
   }
   /* USER CODE END StartTask02 */
@@ -182,13 +201,16 @@ void StartTask02(void *argument)
 void StartTask03(void *argument)
 {
   /* USER CODE BEGIN StartTask03 */
+	printf("Start Task03\n\r");
   /* Infinite loop */
   for(;;)
   {
+	  reportStatus();
 	  for(int i = 0; i < 5; i++){
 		  HAL_GPIO_WritePin(GREEN_LED_GPIO_Port, GREEN_LED_Pin, GPIO_PIN_RESET);
 		  HAL_Delay(250);
 	  }
+	  printf("release resources Task03\n\r");
     osDelay(300);
   }
   /* USER CODE END StartTask03 */
@@ -196,6 +218,13 @@ void StartTask03(void *argument)
 
 /* Private application code --------------------------------------------------*/
 /* USER CODE BEGIN Application */
+void reportStatus(void){
+	task01_state = osThreadGetState(myTask01Handle);
+	task02_state = osThreadGetState(myTask02Handle);
+	task03_state = osThreadGetState(myTask03Handle);
+
+	printf("Task states: 01->%d, 02->%d, 03->%d \r\n", task01_state, task02_state, task03_state);
+}
 
 /* USER CODE END Application */
 

@@ -26,7 +26,8 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN TD */
-
+#include "cmsis_os.h"
+extern osEventFlagsId_t myEventFlags;
 /* USER CODE END TD */
 
 /* Private define ------------------------------------------------------------*/
@@ -165,11 +166,11 @@ void DebugMon_Handler(void)
 void EXTI15_10_IRQHandler(void)
 {
   /* USER CODE BEGIN EXTI15_10_IRQn 0 */
-
+  printf("IRQ\r\n");
   /* USER CODE END EXTI15_10_IRQn 0 */
   HAL_GPIO_EXTI_IRQHandler(B1_Pin);
   /* USER CODE BEGIN EXTI15_10_IRQn 1 */
-
+  osEventFlagsSet(myEventFlags, 0x1);
   /* USER CODE END EXTI15_10_IRQn 1 */
 }
 

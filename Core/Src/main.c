@@ -24,7 +24,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "stdio.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -52,6 +52,9 @@
 void SystemClock_Config(void);
 void MX_FREERTOS_Init(void);
 /* USER CODE BEGIN PFP */
+
+int __io_putchar(int chr);
+void reportStatus(void);
 
 /* USER CODE END PFP */
 
@@ -91,6 +94,8 @@ int main(void)
   MX_GPIO_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
+
+  printf("osKernelInitialize()\n\r");
 
   /* USER CODE END 2 */
 
@@ -162,6 +167,11 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
+
+int __io_putchar(int chr){
+ITM_SendChar(chr);
+return 1;
+}
 
 /* USER CODE END 4 */
 
